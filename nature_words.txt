@@ -1,4 +1,3 @@
-
 sun - солнце
 moon - луна
 star - звезда
@@ -23,7 +22,6 @@ mountain - гора
 ocean - океан
 volcano - вулкан
 blizzard - метель
-frost - иней
 hail - град
 dew - роса
 avalanche - лавина
@@ -37,7 +35,6 @@ galaxy - галактика
 constellation - созвездие
 cloud - облако
 cave - пещера
-aurora - северное сияние
 lotus - лотос
 crystal - кристалл
 downpour - ливень

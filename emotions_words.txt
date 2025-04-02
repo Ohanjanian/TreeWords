@@ -12,10 +12,8 @@ calm - спокойствие
 hope - надежда
 sadness - грусть
 fear - страх
-inspiration - вдохновение
 fate - судьба
 freedom - свобода
-tranquility - безмятежность
 harmony - гармония
 truth - правда
 memory - память
@@ -37,5 +35,5 @@ moment - момент
 darkness - тьма
 temptation - искушение
 infinity - бесконечность
-ephemerality - мимолётность
 harvest - урожай
+love - любовь
