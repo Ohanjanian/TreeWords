@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Tree Word Generator</title>
     <style>
+        /* Все стили остаются такими же, как в предыдущем коде */
         :root {
             --safe-area-inset-top: env(safe-area-inset-top, 0px);
             --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
@@ -28,87 +29,108 @@
         }
         
         .word-display {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    padding: 20px 0;
-    box-sizing: border-box;
-    overflow: hidden; /* Частицы не "растянут" страницу */
-    position: relative; /* Чтобы частицы не вылетали за границы */
-}
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            padding: 20px 0;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reset-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #ff6b6b;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            border: none;
+            outline: none;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
 
         .message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    padding: 20px 0;
-}
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px 0;
+        }
 
-.word-highlight {
-    color: #ffcc00;
-    font-weight: bold;
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.001);
-    border-radius: 24px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    font-size: clamp(1.5rem, 5vw, 2.2rem); /* Адаптивный размер шрифта */
-    text-align: center;
-    max-width: 90vw; /* Ограничиваем ширину */
-    margin: 0.5rem auto;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-    word-break: break-word; /* Переносим по словам */
-    overflow-wrap: anywhere; /* Разрешаем перенос в любом месте */
-    hyphens: auto; /* Автоматическая расстановка переносов */
-    line-height: 1.4; /* Улучшаем читаемость */
-    box-sizing: border-box; /* Учитываем padding в ширине */
-}
+        .word-highlight {
+            color: #ffcc00;
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.001);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            text-align: center;
+            max-width: 90vw;
+            margin: 0.5rem auto;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
 
-.word-highlight.visible {
-    opacity: 1;
-}
+        .word-highlight.visible {
+            opacity: 1;
+        }
         
         .magic-particle {
-    position: absolute;
-    background: #ff6b6b;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: float-up 2s ease-out forwards;
-    z-index: -1;
-    opacity: 0;
-    filter: blur(0.5px); /* Добавляем размытие */
-    box-shadow: 0 0 20px currentColor; /* Добавляем свечение */
-}
-
-/* Для лучшей производительности можно использовать will-change */
-.magic-particle {
-    will-change: transform, opacity;
-}
+            position: absolute;
+            background: #ff6b6b;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-up 2s ease-out forwards;
+            z-index: -1;
+            opacity: 0;
+            filter: blur(0.5px);
+            box-shadow: 0 0 20px currentColor;
+            will-change: transform, opacity;
+        }
         
         @keyframes float-up {
-    0% { 
-        transform: translate(0, 0); 
-        opacity: 0; 
-    }
-    60% { 
-        opacity: 1; 
-    }
-    100% { 
-        transform: translate(var(--tx), var(--ty)); 
-        opacity: 0; 
-    }
-}
+            0% { 
+                transform: translate(0, 0); 
+                opacity: 0; 
+            }
+            60% { 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(var(--tx), var(--ty)); 
+                opacity: 0; 
+            }
+        }
         
         @media (max-height: 600px) {
             .message { gap: 15px; }
@@ -117,51 +139,61 @@
                 font-size: clamp(1.5rem, 4vw, 2rem);
             }
         }
-		
-/* Для очень маленьких экранов */
-@media (max-width: 480px) {
-    .word-highlight {
-        padding: 0.8rem 1.2rem;
-        font-size: clamp(1.2rem, 4.5vw, 1.8rem);
-        max-width: 95vw; /* Ещё уже на маленьких экранах */
-    }
-}
+        
+        @media (max-width: 480px) {
+            .word-highlight {
+                padding: 0.8rem 1.2rem;
+                font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+                max-width: 95vw;
+            }
+            .reset-btn {
+                top: 10px;
+                right: 10px;
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+            }
+        }
 
-/* Для горизонтальной ориентации (ландшафт) */
-@media (max-height: 500px) {
-    .word-highlight {
-        padding: 0.5rem 1rem;
-        font-size: clamp(1rem, 3.5vw, 1.5rem);
-    }
-}
+        @media (max-height: 500px) {
+            .word-highlight {
+                padding: 0.5rem 1rem;
+                font-size: clamp(1rem, 3.5vw, 1.5rem);
+            }
+        }
     </style>
 </head>
 <body>
+    <button class="reset-btn" title="Сбросить прогресс">✖</button>
     <div class="word-display">
         <div class="message" id="message"></div>
     </div>
 
     <script>
-    const message = document.getElementById('message');
+        const message = document.getElementById('message');
+        const resetBtn = document.querySelector('.reset-btn');
+        
+        // Ключи для localStorage
+        const STORAGE_KEYS = {
+            nature: 'usedNatureWords',
+            emotions: 'usedEmotionsWords',
+            symbols: 'usedSymbolsWords'
+        };
 
-    // Встроенные слова
-    const BUILTIN_WORDS = {
-        nature: [
-            "sun - солнце", "moon - луна", "wind - ветер",
-            "river - река", "forest - лес", "mountain - гора"
-        ],
-        emotions: [
-            "joy - радость", "fear - страх", "hope - надежда",
-            "peace - покой", "love - любовь", "sadness - грусть"
-        ],
-        symbols: [
-            "echo - эхо", "song - песня",
-            "flame - пламя", "key - ключ", "bell - колокол"
-        ]
-    };
+        // Загружаем использованные слова
+        let usedNatureWords = JSON.parse(localStorage.getItem(STORAGE_KEYS.nature) || '[]');
+        let usedEmotionsWords = JSON.parse(localStorage.getItem(STORAGE_KEYS.emotions) || '[]');
+        let usedSymbolsWords = JSON.parse(localStorage.getItem(STORAGE_KEYS.symbols) || '[]');
 
-    // Функция создания частиц
-    function createParticles(count) {
+        // Встроенные слова
+        const BUILTIN_WORDS = {
+            nature: ["sun - солнце", "moon - луна", "wind - ветер", "forest - лес"],
+            emotions: ["joy - радость", "fear - страх", "hope - надежда", "peace - покой"],
+            symbols: ["echo - эхо", "song - песня", "flame - пламя", "key - ключ"]
+        };
+
+        // Функция создания частиц
+        function createParticles(count) {
             const wordDisplay = document.querySelector('.word-display');
             const displayRect = wordDisplay.getBoundingClientRect();
             const centerX = displayRect.left + displayRect.width / 2;
@@ -189,86 +221,118 @@
             }
         }
 
-    // Функция перемешивания слов
-    function shuffleWords(element, finalWord, words) {
-        let iterations = 10;
-        let count = 0;
-        let interval = setInterval(() => {
-            const randomWord = words[Math.floor(Math.random() * words.length)];
-            element.textContent = randomWord;
-            count++;
-            if (count >= iterations) {
-                clearInterval(interval);
-                setTimeout(() => {
-                    element.textContent = finalWord;
-                }, 300);
-            }
-        }, 100);
-    }
-
-    // Загрузка слов
-    async function loadWords(category) {
-        const filenames = {
-            nature: 'nature_words.txt',
-            emotions: 'emotions_words.txt',
-            symbols: 'symbols_words.txt'
-        };
-        
-        try {
-            const response = await fetch(filenames[category]);
-            if (!response.ok) return BUILTIN_WORDS[category];
-            
-            const text = await response.text();
-            const lines = text.split('\n')
-                .map(line => line.trim())
-                .filter(line => line.includes(' - ') && line.length > 0);
-            
-            return lines.length > 0 ? lines : BUILTIN_WORDS[category];
-        } catch (error) {
-            console.log(`Используем встроенные слова для ${category}`);
-            return BUILTIN_WORDS[category];
+        // Анимация перемешивания слов
+        function shuffleWords(element, finalWord, words) {
+            let iterations = 10;
+            let count = 0;
+            let interval = setInterval(() => {
+                const randomWord = words[Math.floor(Math.random() * words.length)];
+                element.textContent = randomWord;
+                count++;
+                if (count >= iterations) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        element.textContent = finalWord;
+                    }, 300);
+                }
+            }, 100);
         }
-    }
 
-    // Показ случайных слов
-    async function showRandomWords() {
-        const [natureWords, emotionsWords, symbolsWords] = await Promise.all([
-            loadWords('nature'),
-            loadWords('emotions'),
-            loadWords('symbols')
-        ]);
+        // Загрузка слов из файлов
+        async function loadWords(category) {
+            const filenames = {
+                nature: 'nature_words.txt',
+                emotions: 'emotions_words.txt',
+                symbols: 'symbols_words.txt'
+            };
+            
+            try {
+                const response = await fetch(filenames[category]);
+                if (!response.ok) return BUILTIN_WORDS[category];
+                
+                const text = await response.text();
+                const lines = text.split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.includes(' - ') && line.length > 0);
+                
+                return lines.length > 0 ? lines : BUILTIN_WORDS[category];
+            } catch (error) {
+                console.error(`Ошибка загрузки ${category}:`, error);
+                return BUILTIN_WORDS[category];
+            }
+        }
 
-        const wordsToShow = [
-            natureWords[Math.floor(Math.random() * natureWords.length)],
-            emotionsWords[Math.floor(Math.random() * emotionsWords.length)],
-            symbolsWords[Math.floor(Math.random() * symbolsWords.length)]
-        ];
+        // Получение уникального слова
+        function getUniqueWord(words, usedWords, storageKey) {
+            const availableWords = words.filter(word => !usedWords.includes(word));
+            
+            if (availableWords.length === 0) {
+                usedWords.length = 0;
+                localStorage.setItem(storageKey, JSON.stringify(usedWords));
+                return words[Math.floor(Math.random() * words.length)];
+            }
+            
+            const word = availableWords[Math.floor(Math.random() * availableWords.length)];
+            usedWords.push(word);
+            localStorage.setItem(storageKey, JSON.stringify(usedWords));
+            return word;
+        }
 
-        message.innerHTML = '';
-        
-        wordsToShow.forEach((word, index) => {
-    const wordElement = document.createElement('div');
-    wordElement.className = 'word-highlight';
-    wordElement.textContent = word; // Сразу устанавливаем финальное слово
-    message.appendChild(wordElement);
+        // Показ случайных слов (теперь вызывается только по клику)
+        async function showRandomWords() {
+            const [natureWords, emotionsWords, symbolsWords] = await Promise.all([
+                loadWords('nature'),
+                loadWords('emotions'),
+                loadWords('symbols')
+            ]);
 
-    setTimeout(() => {
-    wordElement.classList.add('visible');
-    const wordsArray = [natureWords, emotionsWords, symbolsWords][index];
-    shuffleWords(wordElement, word, wordsArray); // Оставляем только эту анимацию
-}, index * 800);
-});
-    }
+            const wordsToShow = [
+                getUniqueWord(natureWords, usedNatureWords, STORAGE_KEYS.nature),
+                getUniqueWord(emotionsWords, usedEmotionsWords, STORAGE_KEYS.emotions),
+                getUniqueWord(symbolsWords, usedSymbolsWords, STORAGE_KEYS.symbols)
+            ];
 
-    // Обработчики событий
-    function triggerAnimation() {
-        createParticles(120);
-        showRandomWords();
-    }
+            message.innerHTML = '';
+            
+            wordsToShow.forEach((word, index) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-highlight';
+                wordElement.textContent = word;
+                message.appendChild(wordElement);
 
-    // Обработчик клика по всему экрану
-    document.body.addEventListener('click', triggerAnimation);
-    document.body.addEventListener('touchstart', triggerAnimation);
+                setTimeout(() => {
+                    wordElement.classList.add('visible');
+                    const wordsArray = [natureWords, emotionsWords, symbolsWords][index];
+                    shuffleWords(wordElement, word, wordsArray);
+                }, index * 800);
+            });
+        }
+
+        // Сброс прогресса
+        function resetProgress() {
+            localStorage.removeItem(STORAGE_KEYS.nature);
+            localStorage.removeItem(STORAGE_KEYS.emotions);
+            localStorage.removeItem(STORAGE_KEYS.symbols);
+            usedNatureWords = [];
+            usedEmotionsWords = [];
+            usedSymbolsWords = [];
+            alert("Прогресс сброшен! Следующий клик начнёт показ слов с начала.");
+        }
+
+        // Обработчики событий
+        function triggerAnimation() {
+            createParticles(120);
+            showRandomWords();
+        }
+
+        document.body.addEventListener('click', triggerAnimation);
+        document.body.addEventListener('touchstart', triggerAnimation);
+        resetBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetProgress();
+        });
+
+        // Убрали автостарт showRandomWords() - теперь слова появляются только по клику!
     </script>
 </body>
 </html>
